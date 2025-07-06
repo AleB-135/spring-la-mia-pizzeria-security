@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments/head :: head('Ingredients details')}">
+
+<body>
+    <header>
+        <nav th:replace="~{fragments/navbar :: navbar('Spring Pizzeria Crud')}">
+    </header>
+
+    <main class="container">
+        <section class="title row">
+            <div class="col-12">
+                <h1 class="text-center">
+                    Ingredient: [[*{name}]]
+                </h1>
+            </div>
+        </section>
+
+
+        <section class="book row justify-content-center mb-5" th:object="${ingredient}">
+            <article class="col-8 card">
+                <div class="card-body">
+                    <h1 class="card-title">
+                        [[*{name}]]
+                    </h1>
+                    <h2 class="card-subtitle">
+                        Linked to [[*{pizze.size()}]] pizzas
+                    </h2>
+                </div>
+                <div class="card-footer">
+                    <p>
+                        [[*{description}]]
+                    </p>
+                </div>
+            </article>
+        </section>
+
+        <section class="ingredient row justify-content-center mb-5">
+            <table class="col-12 table table-hover" th:if="${ingredient.pizze.size > 0}">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="Pizza : ${ingredient.pizze}" th:object="${Pizza}">
+                        <td th:text="${Pizza.id}"></td>
+                        <td th:text="${Pizza.name}"></td>
+                        <td th:text="${Pizza.description}"></td>
+                        <td>
+
+
+                            <a th:href="@{|/pizze/edit/*{id}|}" class="btn btn-success btn-sm">Edit</a>
+
+                            <!-- Button trigger modal -->
+                            <button type="button" class="d-inline btn btn-danger btn-sm" data-bs-toggle="modal"
+                                th:data-bs-target="'#delete-modal-' + *{id}">
+                                Delete
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" th:id="'delete-modal-' + *{id}" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                                                <span
+                                                    th:text="'Deletion of ingredient named: ' + ${ingredient.name}"></span>
+                                            </h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure that you want to delete this ingredient from the pizza named: <strong
+                                                    th:text="${Pizza.name}"></strong>"</strong>?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <form th:action="@{|/pizze/delete/*{id}|}" method="POST"
+                                                class="d-inline">
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 class="text-center text-danger" th:unless="${ingredient.pizze.size > 0}">
+                There are no pizzas available at this moment
+            </h2>
+        </section>
+
+    </main>
+
+
+    <th:block th:replace="~{fragments/footer :: scripts}">
+        <!-- Scripts -->
+    </th:block>
+</body>
+
+</html>

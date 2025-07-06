@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{fragments/head :: head ('borrowings')}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizze</title>
+</head>
+
+<body>
+    <header>
+        <nav th:replace="~{fragments/navbar :: navbar ('Spring Pizzeria Crud')}">
+            </head>
+    </header>
+
+    <main class="container">
+        <section class="title row">
+            <div class="col-12">
+
+                <h1 class="text-center m-2">Editing [[${ingredient.name}]]</h1>
+
+            </div>
+        </section>
+
+
+        <section class="borrowings row">
+            <div class="col-12">
+                <form th:action="@{/ingredients/{id}(id=${ingredient.id})}" method="POST" th:object="${ingredient}" id="editing-form">
+                    <!-- Nel form, l'action rappresenta l'indirizzo dove va a fare la sua chiamata e il method rappresente il come effettua la chiamata-->
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name: </label>
+                        <input id="name" type="text" min="3" max="255" class="form-control" th:field="${ingredient.name}"
+                            th:errorClass="is-invalid" required>
+                        <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('name')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                  <div class="mb-3">
+                        <label for="description" class="form-label">Description: </label>
+                        <textarea id="description" class="form-control mb-3" th:field="*{description}" rows="5"></textarea>
+                        <div th:if="${#fields.hasErrors('description')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('description')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                        <div class="mb-3 d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Update ingredient</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </div>
+
+                </form>
+            </div>
+        </section>
+    </main>
+</body>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{fragments/head :: head ('Offer')}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizze</title>
+</head>
+
+<body>
+    <header>
+        <nav th:replace="~{fragments/navbar :: navbar ('Spring Pizzeria Crud')}">
+            </head>
+    </header>
+
+    <main class="container">
+        <section class="title row">
+            <div class="col-12">
+
+                <h1 class="text-center m-2">Updating offer for <strong th:text="${offers.pizza.name}"></strong></h1>
+
+            </div>
+        </section>
+
+
+        <section class="offers row">
+            <div class="col-12 text-center">
+                <ul>
+                    <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <form th:action="@{|/offers/*{id}|}" method="POST" th:object="${offers}" id="offers-creation-form">
+                    <!-- Nel form, l'action rappresenta l'indirizzo dove va a fare la sua chiamata e il method rappresente il come effettua la chiamata-->
+
+                   <input type="hidden" th:field="*{pizza}" id="pizza_id">
+                  
+
+                    <div class="mb-3">
+                        <label for="offers-startingDate" class="form-label">Starting Date: </label>
+                        <input id="offers-startingDate" type="date" class="form-control" th:field="${offers.startingDate}" maxlength="50"
+                            th:errorClass="is-invalid">
+                        <div th:if="${#fields.hasErrors('startingDate')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('startingDate')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="offers-finishingDate" class="form-label">Finishing Date: </label>
+                        <input id="offers-finishingDate" type="date" class="form-control" th:field="${offers.finishingDate}" maxlength="50"
+                                th:errorClass="is-invalid">
+                        <div th:if="${#fields.hasErrors('finishingDate')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('finishingDate')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="offers-title" class="form-label">offers Title: </label>
+                        <textarea id="offers-title" class="form-control" th:field="${offers.title}"
+                                minlength="3" rows="3" th:errorClass="is-invalid"></textarea>
+                        <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('title')}" th:text="${err}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                        <div class="mb-3 d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Update offers</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </div>
+
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
