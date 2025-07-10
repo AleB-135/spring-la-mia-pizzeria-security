@@ -27,10 +27,9 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    @SuppressWarnings("deprecation")
     DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService()); //Il programma userà userDetailsService se l'utente è presente o no in base al suo username
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService());
+        //Il programma userà userDetailsService se l'utente è presente o no in base al suo username
         authProvider.setPasswordEncoder(passwordEncoder()); //Il programma userà il passwordEncoder per controllare se la password è corretta
         return authProvider;
     }
